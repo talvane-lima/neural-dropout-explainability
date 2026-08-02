@@ -17,7 +17,7 @@ O **Dropout** (Srivastava et al., 2014) é uma técnica de regularização em ap
 2. **Atua como um Ensemble Implícito**: Treina exponencialmente muitas sub-redes esparsas que compartilham pesos, realizando uma média geométrica de predições no teste.
 3. **Regulariza Representações Latentes**: Induz a dispersão da importância preditiva por múltiplos caminhos sinápticos, reduzindo a sensibilidade a ruídos espúrios.
 
-Neste projeto, essa dinâmica é avaliada empiricamente em dois datasets tabulares de referência, comparando uma arquitetura **Baseline (p = 0.0)** contra uma variante **Regularizada com Dropout (p = 0.20)**, com explicabilidade pós-hoc através de **SHapley Additive exPlanations (SHAP)**.
+Neste projeto, essa dinâmica é avaliada empiricamente em dois datasets tabulares de referência, comparando uma arquitetura **Baseline (p = 0.0)** contra uma variante **Regularizada com Dropout (p = 0.2)**, com explicabilidade pós-hoc através de **SHapley Additive exPlanations (SHAP)**.
 
 ---
 
@@ -53,7 +53,7 @@ Entrada (d) -> Linear(128) -> BatchNorm1d -> ReLU -> [Dropout(p)]
 
 ### 4.1 Desempenho no Dataset Spambase (57 Features)
 
-| Métrica de Avaliação | Baseline (p = 0.0) | Dropout (p = 0.20) | Variação (Delta) | Destaque Científico |
+| Métrica de Avaliação | Baseline (p = 0.0) | Dropout (p = 0.2) | Variação (Delta) | Destaque Científico |
 | :--- | :---: | :---: | :---: | :--- |
 | **Acurácia (Teste)** | 92.19% | **93.20%** | **+1.01%** | Aumento superior a 1% na acurácia global |
 | **Precisão** | 90.37% | **91.51%** | **+1.14%** | Menor taxa de falsos positivos |
@@ -66,7 +66,7 @@ Entrada (d) -> Linear(128) -> BatchNorm1d -> ReLU -> [Dropout(p)]
 
 ### 4.2 Desempenho no Dataset Adult Census Income (104 Features)
 
-| Métrica de Avaliação | Baseline (p = 0.0) | Dropout (p = 0.20) | Variação (Delta) | Destaque Científico |
+| Métrica de Avaliação | Baseline (p = 0.0) | Dropout (p = 0.2) | Variação (Delta) | Destaque Científico |
 | :--- | :---: | :---: | :---: | :--- |
 | **Acurácia (Teste)** | 84.88% | **85.55%** | **+0.67%** | Melhor acurácia obtida no censo |
 | **Precisão** | 73.24% | **74.20%** | **+0.96%** | Redução consistente de falsos positivos |
@@ -135,13 +135,13 @@ pip install -r requirements.txt
 ### 7.2 Executar Experimento no Dataset Adult Census
 
 ```bash
-python run_experiment.py --dataset adult --dropout 0.20 --epochs 30 --output_dir results
+python run_experiment.py --dataset adult --dropout 0.2 --epochs 30 --output_dir results
 ```
 
 ### 7.3 Executar Experimento no Dataset Spambase
 
 ```bash
-python run_experiment.py --dataset spambase --dropout 0.20 --epochs 35 --output_dir results_spambase
+python run_experiment.py --dataset spambase --dropout 0.2 --epochs 35 --output_dir results_spambase
 ```
 
 ### 7.4 Parâmetros da Linha de Comando (CLI)
@@ -149,7 +149,7 @@ python run_experiment.py --dataset spambase --dropout 0.20 --epochs 35 --output_
 | Argumento | Tipo | Padrão | Descrição |
 | :--- | :---: | :---: | :--- |
 | `--dataset` | `str` | `adult` | Dataset a utilizar (`adult`, `spambase`, `synthetic`) |
-| `--dropout` | `float` | `0.20` | Taxa de Dropout da rede regularizada (`p`) |
+| `--dropout` | `float` | `0.2` | Taxa de Dropout da rede regularizada (`p`) |
 | `--epochs` | `int` | `35` | Número de épocas de treinamento |
 | `--batch_size` | `int` | `256` | Tamanho do mini-batch |
 | `--lr` | `float` | `0.001` | Taxa de aprendizado inicial do AdamW |
