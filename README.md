@@ -11,13 +11,13 @@ Este repositório contém o código-fonte, pipeline de dados, rotinas de treino 
 
 ## 1. Visão Geral e Motivação Científica
 
-O **Dropout** (Srivastava et al., 2014) é uma técnica de regularização em aprendizado profundo que atua desativando estocasticamente neurônios durante o treino com probabilidade $p$. Teoricamente, o Dropout:
+O **Dropout** (Srivastava et al., 2014) é uma técnica de regularização em aprendizado profundo que atua desativando estocasticamente neurônios durante o treino com probabilidade `p`. Teoricamente, o Dropout:
 
 1. **Evita a Co-Adaptação de Neurônios**: Impede que neurônios dependam exclusivamente da presença mútua de ativações específicas para corrigir erros.
 2. **Atua como um Ensemble Implícito**: Treina exponencialmente muitas sub-redes esparsas que compartilham pesos, realizando uma média geométrica de predições no teste.
 3. **Regulariza Representações Latentes**: Induz a dispersão da importância preditiva por múltiplos caminhos sinápticos, reduzindo a sensibilidade a ruídos espúrios.
 
-Neste projeto, essa dinâmica é avaliada empiricamente em dois datasets tabulares de referência, comparando uma arquitetura **Baseline ($p=0.0$)** contra uma variante **Regularizada com Dropout ($p=0.20$)**, com explicabilidade pós-hoc através de **SHapley Additive exPlanations (SHAP)**.
+Neste projeto, essa dinâmica é avaliada empiricamente em dois datasets tabulares de referência, comparando uma arquitetura **Baseline (p = 0.0)** contra uma variante **Regularizada com Dropout (p = 0.20)**, com explicabilidade pós-hoc através de **SHapley Additive exPlanations (SHAP)**.
 
 ---
 
@@ -43,7 +43,7 @@ Entrada (d) -> Linear(128) -> BatchNorm1d -> ReLU -> [Dropout(p)]
             -> Linear(1)   -> Logit de Saída
 ```
 
-- **Otimizador**: AdamW ($\text{lr}=10^{-3}$, $\text{weight\_decay}=10^{-4}$).
+- **Otimizador**: AdamW (`lr = 1e-3`, `weight_decay = 1e-4`).
 - **Scheduler**: `ReduceLROnPlateau` (fator 0.5, paciência de 4 épocas monitorando a perda de validação).
 - **Função de Custo**: `BCEWithLogitsLoss`.
 
@@ -53,7 +53,7 @@ Entrada (d) -> Linear(128) -> BatchNorm1d -> ReLU -> [Dropout(p)]
 
 ### 4.1 Desempenho no Dataset Spambase (57 Features)
 
-| Métrica de Avaliação | Baseline ($p=0.0$) | Dropout ($p=0.20$) | Variação ($\Delta$) | Destaque Científico |
+| Métrica de Avaliação | Baseline (p = 0.0) | Dropout (p = 0.20) | Variação (Delta) | Destaque Científico |
 | :--- | :---: | :---: | :---: | :--- |
 | **Acurácia (Teste)** | 92.19% | **93.20%** | **+1.01%** | Aumento superior a 1% na acurácia global |
 | **Precisão** | 90.37% | **91.51%** | **+1.14%** | Menor taxa de falsos positivos |
@@ -66,7 +66,7 @@ Entrada (d) -> Linear(128) -> BatchNorm1d -> ReLU -> [Dropout(p)]
 
 ### 4.2 Desempenho no Dataset Adult Census Income (104 Features)
 
-| Métrica de Avaliação | Baseline ($p=0.0$) | Dropout ($p=0.20$) | Variação ($\Delta$) | Destaque Científico |
+| Métrica de Avaliação | Baseline (p = 0.0) | Dropout (p = 0.20) | Variação (Delta) | Destaque Científico |
 | :--- | :---: | :---: | :---: | :--- |
 | **Acurácia (Teste)** | 84.88% | **85.55%** | **+0.67%** | Melhor acurácia obtida no censo |
 | **Precisão** | 73.24% | **74.20%** | **+0.96%** | Redução consistente de falsos positivos |
@@ -149,7 +149,7 @@ python run_experiment.py --dataset spambase --dropout 0.20 --epochs 35 --output_
 | Argumento | Tipo | Padrão | Descrição |
 | :--- | :---: | :---: | :--- |
 | `--dataset` | `str` | `adult` | Dataset a utilizar (`adult`, `spambase`, `synthetic`) |
-| `--dropout` | `float` | `0.20` | Taxa de Dropout da rede regularizada ($p$) |
+| `--dropout` | `float` | `0.20` | Taxa de Dropout da rede regularizada (`p`) |
 | `--epochs` | `int` | `35` | Número de épocas de treinamento |
 | `--batch_size` | `int` | `256` | Tamanho do mini-batch |
 | `--lr` | `float` | `0.001` | Taxa de aprendizado inicial do AdamW |
@@ -164,10 +164,10 @@ python run_experiment.py --dataset spambase --dropout 0.20 --epochs 35 --output_
 
 Todas as figuras são salvas em alta resolução prontas para submissão em conferências e periódicos científicos:
 
-1. **Figura 1 (`fig1_training_curves.png`)**: Dinâmica de perda (BCE), evolução do Generalization Gap ($Loss_{val} - Loss_{train}$) e curvas de ROC-AUC/Acurácia ao longo das épocas.
+1. **Figura 1 (`fig1_training_curves.png`)**: Dinâmica de perda (BCE), evolução do Generalization Gap (`Loss_val - Loss_train`) e curvas de ROC-AUC/Acurácia ao longo das épocas.
 2. **Figura 2 (`fig2_roc_pr_confusion.png`)**: Curvas ROC, Precision-Recall e Matrizes de Confusão normalizadas lado a lado.
 3. **Figura 3 (`fig3_shap_beeswarm_comparison.png`)**: Summary Beeswarm plot do SHAP comparando a dispersão das principais features.
-4. **Figura 4 (`fig4_shap_feature_importance.png`)**: Ranking horizontal de Importância Global ($mean(|SHAP|)$).
+4. **Figura 4 (`fig4_shap_feature_importance.png`)**: Ranking horizontal de Importância Global (`mean(|SHAP|)`).
 5. **Figura 5 (`fig5_shap_distribution_metrics.png`)**: Curva de Pareto de Atribuição Cumulativa e Quantificação de Regularização de Representação (Índice de Gini e Entropia).
 
 ---
